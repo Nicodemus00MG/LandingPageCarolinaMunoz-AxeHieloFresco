@@ -1,22 +1,19 @@
-const carouselWrapper = document.getElementById('carousel-wrapper');
-const carouselItems = document.querySelectorAll('.carousel-item');
-let currentIndex = 0;
-const totalItems = carouselItems.length;
+let current = 0;
+const items = document.querySelectorAll('.carousel-item');
 
-function updateCarousel() {
-  carouselWrapper.style.transform = `translateX(${-currentIndex * 100}%)`;
+function showSlide(index) {
+  items.forEach((item, i) => {
+    item.classList.remove('active');
+    if (i === index) item.classList.add('active');
+  });
 }
 
-function moveCarousel(direction) {
-  currentIndex = (currentIndex + direction + totalItems) % totalItems;
-  updateCarousel();
+function nextSlide() {
+  current = (current + 1) % items.length;
+  showSlide(current);
 }
 
-let autoPlayInterval = setInterval(() => moveCarousel(1), 5000);
-
-carouselWrapper.parentElement.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
-carouselWrapper.parentElement.addEventListener('mouseleave', () => {
-  autoPlayInterval = setInterval(() => moveCarousel(1), 5000);
-});
-
-updateCarousel();
+function prevSlide() {
+  current = (current - 1 + items.length) % items.length;
+  showSlide(current);
+}
